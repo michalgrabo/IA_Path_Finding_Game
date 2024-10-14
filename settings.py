@@ -4,12 +4,12 @@ import pickle
 #Ask about whether it is adequate to use pickle
 
 level_map = [
-    "xxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xx                      x",
-    "xx                      x",
-    "xxxx                   xx",
-    "xxxxp     e            xx",
-    "xxxxxxxxxxxxxxxxxxxxxxxxx",
+    "bbbbbbbbbbbbbbbbbbbbbbbbb",
+    "bx                      b",
+    "bx                      b",
+    "bxxx                   xb",
+    "bxxxp     e            xb",
+    "bbbbbbbbbbbbbbbbbbbbbbbbb",
 ]
 tile_size = 64
 screen_width = 1200
@@ -33,7 +33,7 @@ for row in level_map_2:
     level_map_grid.append(row_list)
 
 def convert(pos1):
-    grid_pos = (pos1.x/tile_size, pos1.y/tile_size)
+    grid_pos = (int(pos1[0]/tile_size), int(pos1[1]/tile_size))
     return grid_pos
 
 

@@ -1,6 +1,6 @@
 import pygame
 import time
-
+from settings import level_map_grid
 import settings
 from settings import tile_size
 from node import Node
@@ -82,13 +82,18 @@ class Player (pygame.sprite.Sprite):
                     self.rect.bottom = tile.rect.top
                     self.direction.y = 0
 
-    def movement_collisions(self):
-        self.rect.x += self.direction.x
-        self.rect.y += self.direction.y
-        if settings.convert(self.rect):
+    def boundary_collisions(self):
+        new_x = self.rect.x + self.direction.x
+        new_y = self.rect.y + self.direction.y
+        grid_pos = settings.convert(self.pos)
+        if new_x <= level_map_grid[0] and new_x >= 0 and new_y  <= len(level_map_grid) and new_y  >= 0 :
+            self.rect.x += self.direction.x
+            self.rect.y += self.direction.y
+
+    def obstacle_collisons(self):
+        grid_pos = settings.convert(self.pos)
+        if level_map_grid[grid_pos[1]][grid_pos[0]] == 1:
             pass
-
-
 
 
     def update(self, tiles):
