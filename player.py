@@ -1,5 +1,7 @@
 import pygame
 import time
+
+import settings
 from settings import tile_size
 from node import Node
 
@@ -79,6 +81,15 @@ class Player (pygame.sprite.Sprite):
                 elif self.direction.y > 0:
                     self.rect.bottom = tile.rect.top
                     self.direction.y = 0
+
+    def movement_collisions(self):
+        self.rect.x += self.direction.x
+        self.rect.y += self.direction.y
+        if settings.convert(self.rect):
+            pass
+
+
+
 
     def update(self, tiles):
         self.get_input()
