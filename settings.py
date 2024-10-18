@@ -32,9 +32,8 @@ for row in level_map_2:
             row_list.append(0)
     level_map_grid.append(row_list)
 
-def convert(pos1):
-    grid_pos = (int(pos1[0]/tile_size), int(pos1[1]/tile_size))
-    return grid_pos
+def convert_grid(value):
+    return int(value/tile_size)
 
 
 

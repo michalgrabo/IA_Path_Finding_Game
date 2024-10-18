@@ -26,7 +26,7 @@ class Level:
             for cell_index, cell in enumerate(row):
                 x = cell_index * tile_size
                 y = row_index * tile_size
-                if cell == "x":
+                if cell == "x" or cell == "b":
                     tile = Tile((x,y), tile_size)
                     self.tiles.add(tile)
                 elif cell == "p":

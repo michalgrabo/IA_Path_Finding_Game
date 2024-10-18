@@ -36,18 +36,18 @@ class Player (pygame.sprite.Sprite):
         self.direction.y = 0
         if self.current_t - self.last_moved_time > self.delay:
             if keys[pygame.K_RIGHT]:
-                self.direction.x += tile_size
+                self.direction.x = 1
                 #self.rect =
             elif keys[pygame.K_LEFT]:
-                self.direction.x -= tile_size
+                self.direction.x = -1
             elif keys[pygame.K_UP]:
                 """
                 time.sleep(1)
                 self.x += tile_size
                 """
-                self.direction.y -= tile_size
+                self.direction.y = -1
             elif keys[pygame.K_DOWN]:
-                self.direction.y += tile_size
+                self.direction.y = 1
 
             """
             elif keys[pygame.K_f]:
@@ -83,22 +83,43 @@ class Player (pygame.sprite.Sprite):
                     self.direction.y = 0
 
     def boundary_collisions(self):
-        new_x = self.rect.x + self.direction.x
-        new_y = self.rect.y + self.direction.y
-        grid_pos = settings.convert(self.pos)
-        if new_x <= level_map_grid[0] and new_x >= 0 and new_y  <= len(level_map_grid) and new_y  >= 0 :
-            self.rect.x += self.direction.x
-            self.rect.y += self.direction.y
+        #new_x = settings.convert_grid(self.rect.x + self.direction.x)
+        #new_y = settings.convert_grid(self.rect.y + self.direction.y)
+        grid_pos_x = (settings.convert_grid(self.rect.x))
+        grid_pos_y = (settings.convert_grid(self.rect.y))
+        #print(grid_pos_x)
+        new_x = int(grid_pos_x + self.direction.x)
+        new_y = int(grid_pos_y + self.direction.y)
+        #print(new_x)
+        #print(self.rect.x, self.rect.y)
+        """
+        if new_x < len(level_map_grid[0])-1 and new_x >= 1 and new_y  < len(level_map_grid)-1 and new_y >= 1:
+            self.rect.x = new_x
+            self.rect.y = new_y
+        """
+        if not(new_x == grid_pos_x and new_y == grid_pos_y):
+            if level_map_grid[new_y][new_x] == 0:
+                self.rect.x += self.direction.x * tile_size
+                self.rect.y += self.direction.y * tile_size
+                print(self.rect.x, self.rect.y)
 
-    def obstacle_collisons(self):
-        grid_pos = settings.convert(self.pos)
-        if level_map_grid[grid_pos[1]][grid_pos[0]] == 1:
-            pass
-
+    def visibility_field(self):
+        field = []
 
     def update(self, tiles):
         self.get_input()
-        self.horizontal_movement_collision(tiles)
-        self.vertical_movement_collision(tiles)
+        #self.horizontal_movement_collision(tiles)
+        #self.vertical_movement_collision(tiles)
+        self.boundary_collisions()
+
+"""
+    def obstacle_collisons(self):
+        new_x = settings.convert_grid(self.rect.x + self.direction.x)
+        new_y = settings.convert_grid(self.rect.y + self.direction.y)
+        if not level_map_grid[new_y][new_x] == 1:
+            self.rect.x = new_x 
+            self.rect.y = new_y 
+"""
+
 
 
