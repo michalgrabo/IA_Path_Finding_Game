@@ -4,12 +4,12 @@ import pickle
 #Ask about whether it is adequate to use pickle
 
 level_map = [
-    "bbbbbbbbbbbbbbbbbbbbbbbbb",
-    "bx                      b",
-    "bx                      b",
-    "bxxx                   xb",
-    "bxxxp     e            xb",
-    "bbbbbbbbbbbbbbbbbbbbbbbbb",
+    "xxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xx                      x",
+    "xx                      x",
+    "xxxx                   xx",
+    "xxxxp     e            xx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxx",
 ]
 tile_size = 64
 screen_width = 1200
@@ -31,6 +31,19 @@ for row in level_map_2:
         else:
             row_list.append(0)
     level_map_grid.append(row_list)
+
+def visibility_field(size, pos):
+    field_grid = []
+    for i in range(size, -size - 1, -1):
+        for j in range(-size, size + 1):
+            field_grid.append((j, i))
+    actual_field = []
+    print(field_grid)
+    for i in range(len(field_grid)):
+        real_pos_x = field_grid[i][0] + convert_grid(pos.x)
+        real_pos_y = field_grid[i][1] + convert_grid(pos.y)
+        actual_field.append((real_pos_x, real_pos_y))
+    return actual_field
 
 def convert_grid(value):
     return int(value/tile_size)

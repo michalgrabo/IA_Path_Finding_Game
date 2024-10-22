@@ -1,3 +1,5 @@
+from dataclasses import field
+
 import pygame
 import time
 from settings import level_map_grid
@@ -85,11 +87,13 @@ class Player (pygame.sprite.Sprite):
     def boundary_collisions(self):
         #new_x = settings.convert_grid(self.rect.x + self.direction.x)
         #new_y = settings.convert_grid(self.rect.y + self.direction.y)
-        grid_pos_x = (settings.convert_grid(self.rect.x))
-        grid_pos_y = (settings.convert_grid(self.rect.y))
+        #grid_pos_x = (settings.convert_grid(self.rect.x))
+        #grid_pos_y = (settings.convert_grid(self.rect.y))
+        grid_pos = self.get_grid_pos()
         #print(grid_pos_x)
-        new_x = int(grid_pos_x + self.direction.x)
-        new_y = int(grid_pos_y + self.direction.y)
+        new_pos = (int(grid_pos[0] + self.direction.x), int(grid_pos[1] + self.direction.y))
+        #new_x = int(grid_pos_x + self.direction.x)
+        #new_y = int(grid_pos_y + self.direction.y)
         #print(new_x)
         #print(self.rect.x, self.rect.y)
         """
@@ -97,14 +101,26 @@ class Player (pygame.sprite.Sprite):
             self.rect.x = new_x
             self.rect.y = new_y
         """
-        if not(new_x == grid_pos_x and new_y == grid_pos_y):
-            if level_map_grid[new_y][new_x] == 0:
+        if grid_pos != new_pos:
+            print(level_map_grid[new_pos[1]][new_pos[0]])
+            if level_map_grid[new_pos[1]][new_pos[0]] == 0:
                 self.rect.x += self.direction.x * tile_size
                 self.rect.y += self.direction.y * tile_size
                 print(self.rect.x, self.rect.y)
 
-    def visibility_field(self):
-        field = []
+    def get_grid_pos(self):
+        grid_pos = (settings.convert_grid(self.rect.x), settings.convert_grid(self.rect.y))
+        return grid_pos
+
+
+
+
+
+
+
+        field = [[(settings.convert_grid(self.rect.x) -1, settings.convert_grid(self.rect.y) +1 ),(),()],[],[]]
+        field = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
 
     def update(self, tiles):
         self.get_input()
