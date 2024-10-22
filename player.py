@@ -29,6 +29,7 @@ class Player (pygame.sprite.Sprite):
         self.last_moved_time = 0
         self.delay = 0.1
         self.current_t = 0
+        self.vis_field = settings.visibility_field(2, self.rect)
         #self.last_moved = clock.time.get_tick()
 
     def get_input(self):
@@ -112,14 +113,8 @@ class Player (pygame.sprite.Sprite):
         grid_pos = (settings.convert_grid(self.rect.x), settings.convert_grid(self.rect.y))
         return grid_pos
 
-
-
-
-
-
-
-        field = [[(settings.convert_grid(self.rect.x) -1, settings.convert_grid(self.rect.y) +1 ),(),()],[],[]]
-        field = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    def calculate_field(self):
+        self.vis_field = settings.visibility_field(2, self.rect)
 
 
     def update(self, tiles):
@@ -127,6 +122,7 @@ class Player (pygame.sprite.Sprite):
         #self.horizontal_movement_collision(tiles)
         #self.vertical_movement_collision(tiles)
         self.boundary_collisions()
+        self.calculate_field()
 
 """
     def obstacle_collisons(self):
