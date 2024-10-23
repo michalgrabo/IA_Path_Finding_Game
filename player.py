@@ -31,6 +31,9 @@ class Player (pygame.sprite.Sprite):
         self.vis_field = settings.visibility_field(2, self.rect)
         #self.last_moved = clock.time.get_tick()
 
+    def get_vis_field(self):
+        return self.vis_field
+
     def get_input(self):
         self.current_t = time.time()
         keys = pygame.key.get_pressed()
