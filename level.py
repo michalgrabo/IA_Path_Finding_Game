@@ -49,6 +49,7 @@ class Level:
         self.player.update(self.tiles)
         self.player.draw(self.display_surface)
         self.enemy.update(self.tiles)
+        self.enemy.draw(self.display_surface)
 
     def scroll(self):
         player = self.player.sprite

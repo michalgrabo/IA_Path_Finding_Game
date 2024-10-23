@@ -15,7 +15,6 @@ class Player (pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         self.x = pos[0]
-        print(self.x)
         self.y = pos[1]
         self.image = pygame.Surface((tile_size, tile_size))
         self.image.fill("red")
@@ -61,35 +60,12 @@ class Player (pygame.sprite.Sprite):
             """
             self.last_moved_time = self.current_t
 
-    def horizontal_movement_collision(self, tiles):
-        self.rect.x += self.direction.x
-
-        for tile in tiles.sprites():
-            if tile.rect.colliderect(self.rect):
-                if self.direction.x < 0:
-                    self.rect.left = tile.rect.right
-                    self.direction.x = 0
-                elif self.direction.x > 0:
-                    self.rect.right = tile.rect.left
-                    self.direction.x = 0
-
-    def vertical_movement_collision(self, tiles):
-        self.rect.y += self.direction.y
-
-        for tile in tiles.sprites():
-            if tile.rect.colliderect(self.rect):
-                if self.direction.y < 0:
-                    self.rect.top = tile.rect.bottom
-                    self.direction.y = 0
-                elif self.direction.y > 0:
-                    self.rect.bottom = tile.rect.top
-                    self.direction.y = 0
-
     def boundary_collisions(self):
         #new_x = settings.convert_grid(self.rect.x + self.direction.x)
         #new_y = settings.convert_grid(self.rect.y + self.direction.y)
         #grid_pos_x = (settings.convert_grid(self.rect.x))
         #grid_pos_y = (settings.convert_grid(self.rect.y))
+
         grid_pos = self.get_grid_pos()
         #print(grid_pos_x)
         new_pos = (int(grid_pos[0] + self.direction.x), int(grid_pos[1] + self.direction.y))
@@ -103,11 +79,11 @@ class Player (pygame.sprite.Sprite):
             self.rect.y = new_y
         """
         if grid_pos != new_pos:
-            print(level_map_grid[new_pos[1]][new_pos[0]])
+            #print(level_map_grid[new_pos[1]][new_pos[0]])
             if level_map_grid[new_pos[1]][new_pos[0]] == 0:
                 self.rect.x += self.direction.x * tile_size
                 self.rect.y += self.direction.y * tile_size
-                print(self.rect.x, self.rect.y)
+                #print(self.rect.x, self.rect.y)
 
     def get_grid_pos(self):
         grid_pos = (settings.convert_grid(self.rect.x), settings.convert_grid(self.rect.y))

@@ -21,5 +21,11 @@ class Node:
     def update_parent_pointer(self, parent):
         self.parent_pointer = parent
 
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"

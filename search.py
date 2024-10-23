@@ -1,25 +1,25 @@
+import math
 import queue
 from node import Node
 
-#things to do, figure out when differnt scores get updated, make sure first node has correct f score (updating h score
 def get_neighbours(star_node, map):
     neighbours = []
     directions = [(0, 1), (0, -1), (1, 0), (-1, 0)] #chat gpt
     for x, y in directions:
         new_x = star_node.x + x
         new_y = star_node.y + y
-        if new_x <= len(map[0]) -1 and new_x >= 0 and new_y <= len(map) -1 and new_y >= 0 and map[new_y][new_x] != 0:
+        if new_x <= len(map[0]) -1 and new_x >= 0 and new_y <= len(map) -1 and new_y >= 0 and map[new_y][new_x] != 1:
             neighbouring_node = Node(new_x, new_y)
             neighbours.append(neighbouring_node)
     return neighbours
 
-def reconstruct_2(current, path):
+def reconstruct(current, path):
     path.append(current)
-    if current.parent_pointer == None:
+    if current.parent_pointer.parent_pointer == None:
         #print(current.x, current.y)
         return None
-    reconstruct_2(current.parent_pointer, path)
-    return path #need to reverse this path afterwards
+    reconstruct(current.parent_pointer, path)
+    return path[::-1] #need to reverse this path afterwards
 
 def a_search (start, target, map):
     open_set = queue.PriorityQueue()
@@ -36,7 +36,7 @@ def a_search (start, target, map):
         current = open_set.get()[1]
         open_set_nodes.remove((current.x, current.y))
         if current.x == target.x and current.y == target.y:#Ask Mr T about memory address java similarity
-            return reconstruct_2(current, path)[::-1]
+            return reconstruct(current, path)
         else:
             closed_set.append((current.x, current.y))
             neighbours = get_neighbours(current, map)

@@ -5,10 +5,10 @@ import pickle
 
 level_map = [
     "xxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xx                      x",
+    "xx                     ex",
     "xx                      x",
     "xxxx                   xx",
-    "xxxxp     e            xx",
+    "xxxxp                  xx",
     "xxxxxxxxxxxxxxxxxxxxxxxxx",
 ]
 tile_size = 64
@@ -38,7 +38,7 @@ def visibility_field(size, pos):
         for j in range(-size, size + 1):
             field_grid.append((j, i))
     actual_field = []
-    print(field_grid)
+    #print(field_grid)
     for i in range(len(field_grid)):
         real_pos_x = field_grid[i][0] + convert_grid(pos.x)
         real_pos_y = field_grid[i][1] + convert_grid(pos.y)
