@@ -26,6 +26,8 @@ class Player (pygame.sprite.Sprite):
         self.delay = 0.1
         self.current_t = 0
         self.vis_field = settings.visibility_field(2, self.rect, level_map_grid)
+        self.is_alive = True
+        self.won = False
         #self.last_moved = clock.time.get_tick()
 
     def get_vis_field(self):
@@ -39,14 +41,9 @@ class Player (pygame.sprite.Sprite):
         if self.current_t - self.last_moved_time > self.delay:
             if keys[pygame.K_RIGHT]:
                 self.direction.x = 1
-                #self.rect =
             elif keys[pygame.K_LEFT]:
                 self.direction.x = -1
             elif keys[pygame.K_UP]:
-                """
-                time.sleep(1)
-                self.x += tile_size
-                """
                 self.direction.y = -1
             elif keys[pygame.K_DOWN]:
                 self.direction.y = 1
@@ -58,7 +55,6 @@ class Player (pygame.sprite.Sprite):
         #new_y = settings.convert_grid(self.rect.y + self.direction.y)
         #grid_pos_x = (settings.convert_grid(self.rect.x))
         #grid_pos_y = (settings.convert_grid(self.rect.y))
-
         grid_pos = self.get_grid_pos()
         #print(grid_pos_x)
         new_pos = (int(grid_pos[0] + self.direction.x), int(grid_pos[1] + self.direction.y))
@@ -85,6 +81,8 @@ class Player (pygame.sprite.Sprite):
         #self.vertical_movement_collision(tiles)
         self.boundary_collisions()
         self.calculate_field()
+
+
 
 """
     def obstacle_collisons(self):

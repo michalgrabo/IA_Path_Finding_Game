@@ -44,7 +44,7 @@ def a_search (start, target, map):
         current = open_set.get()[1]
         open_set_nodes.remove((current.x, current.y))
         if current.x == target.x and current.y == target.y:#Ask Mr T about memory address java similarity
-            return reconstruct2(current, path)
+            return reconstruct(current, path)
         else:
             closed_set.append((current.x, current.y))
             neighbours = get_neighbours(current, map)

@@ -13,6 +13,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_r]:
+            level = Level(level_map, screen)
 
     screen.fill("black")
     level.run()
