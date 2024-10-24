@@ -5,7 +5,7 @@ import time
 from settings import level_map_grid
 import settings
 from settings import tile_size
-from node import Node
+
 
 
 
@@ -25,7 +25,7 @@ class Player (pygame.sprite.Sprite):
         self.last_moved_time = 0
         self.delay = 0.1
         self.current_t = 0
-        self.vis_field = settings.visibility_field(2, self.rect)
+        self.vis_field = settings.visibility_field(2, self.rect, level_map_grid)
         #self.last_moved = clock.time.get_tick()
 
     def get_vis_field(self):
@@ -74,7 +74,7 @@ class Player (pygame.sprite.Sprite):
         return grid_pos
 
     def calculate_field(self):
-        self.vis_field = settings.visibility_field(2, self.rect)
+        self.vis_field = settings.visibility_field(2, self.rect, level_map_grid)
 
 
     def update(self):

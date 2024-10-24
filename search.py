@@ -13,13 +13,21 @@ def get_neighbours(star_node, map):
             neighbours.append(neighbouring_node)
     return neighbours
 
-def reconstruct(current, path):
+def reconstruct2(current, path):
     path.append(current)
     if current.parent_pointer.parent_pointer == None:
         #print(current.x, current.y)
         return None
-    reconstruct(current.parent_pointer, path)
+    reconstruct2(current.parent_pointer, path)
     return path[::-1] #need to reverse this path afterwards
+
+def reconstruct(current, path):
+    path.append(current)
+    placeholder = current
+    while placeholder.parent_pointer != None:
+        placeholder = placeholder.parent_pointer
+        path.append(placeholder)
+    return path[::-1]
 
 def a_search (start, target, map):
     open_set = queue.PriorityQueue()
@@ -36,7 +44,7 @@ def a_search (start, target, map):
         current = open_set.get()[1]
         open_set_nodes.remove((current.x, current.y))
         if current.x == target.x and current.y == target.y:#Ask Mr T about memory address java similarity
-            return reconstruct(current, path)
+            return reconstruct2(current, path)
         else:
             closed_set.append((current.x, current.y))
             neighbours = get_neighbours(current, map)

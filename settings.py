@@ -14,7 +14,7 @@ level_map = [
 """
 level_map = [
     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "xx                                                    x",
+    "xxp                                                   x",
     "xx                                                    x",
     "xx                                                    x",
     "xx   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx           x",
@@ -33,7 +33,7 @@ level_map = [
     "xx        x       xxxxx   xxxxx            x x     x  x",
     "xxxxxxxxxxx           x      x             x   x   x  x",
     "xx           xxxxxxxxxxxx      xxxxxxxxxxxxx x     x  x",
-    "xx                                 p            x  x  x",
+    "xx                                              x  x  x",
     "xx                                                    x",
     "xx                                                    x",
     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -62,7 +62,7 @@ for row in level_map_2:
             row_list.append(0)
     level_map_grid.append(row_list)
 
-def visibility_field(size, pos):
+def visibility_field(size, pos, map):
     field_grid = []
     for i in range(size, -size - 1, -1):
         for j in range(-size, size + 1):
@@ -72,6 +72,10 @@ def visibility_field(size, pos):
     for i in range(len(field_grid)):
         real_pos_x = field_grid[i][0] + convert_grid(pos.x)
         real_pos_y = field_grid[i][1] + convert_grid(pos.y)
+        try:
+            map[real_pos_y][real_pos_x]
+        except IndexError:
+            continue
         actual_field.append((real_pos_x, real_pos_y))
     return actual_field
 

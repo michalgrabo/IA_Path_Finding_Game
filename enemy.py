@@ -6,6 +6,7 @@ import time
 import settings
 from settings import tile_size, level_map_grid
 import player
+from player import Player
 
 
 class Enemy (pygame.sprite.Sprite):
@@ -16,45 +17,49 @@ class Enemy (pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         self.direction = pygame.math.Vector2(0, 0)
         self.game_map = map
-        self.hearing_field = settings.visibility_field(3, self.rect)
+        self.hearing_field = settings.visibility_field(6, self.rect, level_map_grid)
         self.need_new_x_y = True
         self.last_moved_time = 0
-        self.delay = 0.5
+        self.delay = 0.2
         self.current_t = 0
         self.heard_far = False
         self.heard_close = False
         self.path_to_goal = []
         self.goal = (0,0)
         self.last_goal = (0,0)
+        self.player_last_pos = (0, 0)
 
     def get_grid_pos(self):
         grid_pos = (int(settings.convert_grid(self.rect.x)), int(settings.convert_grid(self.rect.y)))
         return grid_pos
 
-    def check_if_heard(self):
+    def check_if_heard(self, player):
         for item in self.hearing_field:
-            for item_2 in player.Player.get_vis_field():
+            for item_2 in Player.get_vis_field(player):
                 if item == item_2:
-                    self.heard_far = True
+                    print("heard")
+                    return True
+        return False
 
 
-    def move_type(self):#need to review
-        #self.check_if_heard()
-        if self.heard_far == True:
-            self.generate_till_rigth("detected")
+
+    def move_type(self, player):#need to review
+        if self.check_if_heard(player) and self.player_last_pos != Player.get_grid_pos(player):
+            self.need_new_x_y = False
+            self.generate_till_rigth("detected", player)
             #self.random_movement = False
-        if self.heard_far == False and self.heard_close == False and self.need_new_x_y == True:
+        if self.heard_close == False and self.need_new_x_y == True:
             #print("hello")
-            self.generate_till_rigth("random")
+            self.generate_till_rigth("random", player)
             self.need_new_x_y = False
         self.move()
 
 
-    def generate_till_rigth(self, type):
+    def generate_till_rigth(self, type, player):
         if type == "random":
             path = None
             while path == None:
-                goal = self.generate_x_y("random")
+                goal = self.generate_x_y("random", None)
                 start = Node(self.get_grid_pos()[0], self.get_grid_pos()[1]) #possibly could deleat
                 target = Node(goal[0], goal[1])
                 path = search.a_search(start, target, level_map_grid)
@@ -63,7 +68,7 @@ class Enemy (pygame.sprite.Sprite):
         if type == "detected":
             path = None
             while path == None:
-                goal = self.generate_x_y("detected")
+                goal = self.generate_x_y("detected", player)
                 start = Node(self.get_grid_pos()[0], self.get_grid_pos()[1]) #possibly could deleat
                 target = Node(goal[0], goal[1])
                 path = search.a_search(start, target, level_map_grid)
@@ -87,7 +92,7 @@ class Enemy (pygame.sprite.Sprite):
                 self.last_moved_time = self.current_t
 
 
-    def generate_x_y(self, type):
+    def generate_x_y(self, type, player):
         correct = False
         if type == "random":
             while not correct:
@@ -101,19 +106,25 @@ class Enemy (pygame.sprite.Sprite):
                     correct = True
             return coordinate_goal
         elif type == "detected":
+            player_field = Player.get_vis_field(player)
             while not correct:
-                coordinate_goal = random.randint(0, len(player.Player.get_vis_field())-1)
-                if coordinate_goal != player.Player.get_grid_pos():
+                print("here")
+                print("here")
+                coordinate_goal = player_field[random.randint(0, len(player_field)-1)]
+                if coordinate_goal != Player.get_grid_pos(player) and settings.level_map_grid[coordinate_goal[1]][coordinate_goal[0]] != 1:
                     correct = True
+            self.player_last_pos = Player.get_grid_pos(player)
+            #print(coordinate_goal)
+            #print(Player.get_grid_pos(player))
             return coordinate_goal
 
 
     def calculate_field(self):
-        self.hearing_field = settings.visibility_field(2, self.rect)
+        self.hearing_field = settings.visibility_field(2, self.rect, level_map_grid)
         #print(self.hearing_field)
 
-    def update(self, tiles):
-        self.move_type()
+    def update(self, tiles, player):
+        self.move_type(player)
         self.calculate_field()
 
 
