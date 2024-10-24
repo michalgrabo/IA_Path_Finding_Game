@@ -72,9 +72,7 @@ def visibility_field(size, pos, map):
     for i in range(len(field_grid)):
         real_pos_x = field_grid[i][0] + convert_grid(pos.x)
         real_pos_y = field_grid[i][1] + convert_grid(pos.y)
-        try:
-            map[real_pos_y][real_pos_x]
-        except IndexError:
+        if real_pos_x < 0 or real_pos_y < 0:
             continue
         actual_field.append((real_pos_x, real_pos_y))
     return actual_field
